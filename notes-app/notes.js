@@ -5,11 +5,8 @@ const getNotes = function () {
 
 const addNote = function (title, body) {
   const fileData = loadNotes();
-  const titleExist = fileData.filter(function (item) {
-    return item.title === title;
-  });
-  console.log(titleExist);
-  if (titleExist.length === 0) {
+  const titleExist = fileData.find((item) =>item.title === title);
+  if (!titleExist) {
     fileData.push({ title: title, body: body });
     console.log(fileData);
     saveNotes(fileData);
@@ -45,7 +42,25 @@ const removeNotes = function(title) {
         console.log('title doesnt exist');
     }
 }
+const listingNotes=()=>{
+    const noteslist=loadNotes();
+    noteslist.forEach((item)=>{
+        console.log(item.title)
+    })
+}
+const ReadNote=(title)=>{
+const noteslist=loadNotes();
+const noteToRead=noteslist.find((item)=> item.title===title);
+if(noteToRead){
+    console.log("Title:"+noteToRead.title+" body ",noteToRead.body)
+}else{
+    console.log('note not found')
+}
+
+}
 module.exports = {
   addNote: addNote,
   removeNotes:removeNotes,
+  listingNotes:listingNotes,
+  ReadNote:ReadNote,
 };

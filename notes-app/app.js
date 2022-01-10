@@ -4,7 +4,7 @@
 
 const notes = require('./notes.js');
 const yargs = require('yargs');
-const { string } = require('yargs');
+// const { string } = require('yargs');
 
 // console.log(getNotes());
 // console.log(process.argv);
@@ -48,6 +48,28 @@ yargs.command({
         // console.log("removing the notes")
     }
 })
+yargs.command({
+    command:'listNotes',
+    describe:'listing',
+    handler(){
+        notes.listingNotes();
+    }
+});
+yargs.command({
+    command:'read',
+    describe:'read the title',
+    builder:{
+        title:{
+            describe:'title to be read',
+            demandOption:true,
+            type:'string',
+        },
+    },
+    handler(argv){
+        notes.ReadNote(argv.title)
+    }
+})
+
 
 // console.log(yargs.argv); very imp to trigger the yargs parsing but it will cause printing twice disabling it will cause the command not to run
 
