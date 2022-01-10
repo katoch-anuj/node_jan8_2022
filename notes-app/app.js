@@ -2,7 +2,7 @@
 // fs.writeFileSync('notes.txt','this is created by node.js\n') ;
 // fs.appendFileSync('notes.txt','this is appended 1\n');
 
-const getNotes = require('./notes.js');
+const notes = require('./notes.js');
 const yargs = require('yargs');
 
 // console.log(getNotes());
@@ -26,8 +26,9 @@ yargs.command({
     },
     handler:function(argv){
         // console.log('adding the notes');
-        console.log('title: ',argv.title);
-        console.log('Body: ',argv.body);
+        notes.addNote(argv.title,argv.body)
+        // console.log('title: ',argv.title);
+        // console.log('Body: ',argv.body);
     }
 });
 
