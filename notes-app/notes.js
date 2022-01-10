@@ -32,6 +32,20 @@ const loadNotes = function () {
     return [];
   }
 };
+const removeNotes = function(title) {
+    const notes=loadNotes();
+    const removeNoteFlag=notes.filter(function(item){
+        return item.title!==title;
+    })
+    console.log(removeNoteFlag)
+    if(removeNoteFlag.length<notes.length){
+        saveNotes(removeNoteFlag);
+        console.log('node removed with title',title);
+    }else{
+        console.log('title doesnt exist');
+    }
+}
 module.exports = {
   addNote: addNote,
+  removeNotes:removeNotes,
 };

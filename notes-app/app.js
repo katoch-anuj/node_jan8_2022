@@ -4,6 +4,7 @@
 
 const notes = require('./notes.js');
 const yargs = require('yargs');
+const { string } = require('yargs');
 
 // console.log(getNotes());
 // console.log(process.argv);
@@ -34,9 +35,17 @@ yargs.command({
 
 yargs.command({
     command:'remove',
-    describe:'removig the notes',
-    handler: function(){
-        console.log("removing the notes")
+    describe:'removing the notes',
+    builder:{
+        title:{
+            describe:'title',
+            demandOption:true,
+            type:'string',
+        }
+    },
+    handler: function(yargs){
+        notes.removeNotes(yargs.title);
+        // console.log("removing the notes")
     }
 })
 
