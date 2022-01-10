@@ -21,4 +21,16 @@ console.log(yargs.argv); is very imp as it initiates the parsing of all the comm
 if we dont use either of above then nothing will happen.
 
 
+cont databuffer=fs.readFileSync('dummy.json') --> this will return some binary data and not the json
+dataBuffer.toString();
+
+using debugger
+add debugger in code
+node inspect app.js add 
+
+got to chrome
+chrome://inspect
+
+'restart' in terminal re executes the program
+
 
