@@ -9,6 +9,7 @@ console.log(path.join(__dirname,'../public')); //this is done to get the path va
 
 const publicPath=path.join(__dirname,'../public');
 
+//static defines that the page served is static
 app.use(express.static(publicPath)); //this tells express to use the file from path for default route so default route is never served as its value is  index.html
 // if its index1.html the default route will be served
 // After above line we can access the other pages as localhost:4000/isAbsolute.html and we wont be needing any routes
