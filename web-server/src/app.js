@@ -3,9 +3,14 @@ const path= require('path');
 
 const app = express();
 
+//Setting path for express config
 const publicPath=path.join(__dirname,'../public');
+const hbsViewsPath=path.join(__dirname,'../templates')
+
 //to tell express js which template engine we installed
 app.set('view engine','hbs')
+//update default views folder with new path created
+app.set('views',hbsViewsPath)
 
 //static defines that the page served is static
 app.use(express.static(publicPath));// this wont return anything cz index.html is absent if index.html is present then this will execuet and not dynamic depending upon the sequencing.
