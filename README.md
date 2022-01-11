@@ -19,3 +19,22 @@ and another is "path"
  / means the root of the current drive;
 
 ./ means the current directory;
+
+app.use(express.static(publicPath)); here stattic refers that the page is static
+
+HBS
+to tell express js which template engine we installed and want to use
+app.set('view engine','hbs')
+
+For dynamic templates
+res.render('index') this always check inside the "views" folder only and only for templates (in this case hbs)
+for static template
+app.use(express.static(publicPath));
+Folder name 'views' is imp else error would be thrown
+NOTE: if we have both static code
+app.use(express.static(publicPath));
+ and dynamic code for route
+ app.get("",(req,res)=>{
+    res.render('index');
+})
+present so sequencing matters and which returns true
