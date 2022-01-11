@@ -38,3 +38,9 @@ app.use(express.static(publicPath));
     res.render('index');
 })
 present so sequencing matters and which returns true
+
+working with partials in HBS
+hbs.registerPartial(partialPath) path from where partials to be picked
+to use partials {{>header}}
+for nodemon to work
+nodemon src/app.js -e js,hbs
