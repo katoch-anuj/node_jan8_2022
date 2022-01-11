@@ -21,19 +21,34 @@ app.use(express.static(publicPath));// this wont return anything cz index.html i
 
 app.get("",(req,res)=>{
     res.render('index',{
-        title:'Home',
-        body:"home Page"
+        title:'Weather',
+        description:"Use this site to get your weather",
+        footer:"Created by Anuj"
     });
 })
 
 app.get("/about",(req,res)=>{
     res.render('about',{
         title:'About',
-        body:"About Page"
+        description:'lorem ipsum',
+        footer:"Created by Anuj"
+    })
+})
+app.get("/help",(req,res)=>{
+    res.render('help',{
+        title:'Help',
+        description:'This is for your help',
+        footer:"Created by Anuj"
     })
 })
 app.get('/weather',(req,res)=>{
     res.send('weather')
+})
+
+app.get("*",(req,res)=>{
+    res.render("404",{
+        errorMsg:'404 page not found'
+    })
 })
 
 app.listen(4000,()=>{ // this is imp to start the express server and mention port

@@ -44,3 +44,6 @@ hbs.registerPartial(partialPath) path from where partials to be picked
 to use partials {{>header}}
 for nodemon to work
 nodemon src/app.js -e js,hbs
+
+404
+app.get("*",
