@@ -1,4 +1,5 @@
 const express = require('express'); // express doesn't return an object but a fucntion itself
+const { isAbsolute } = require('path');
 const path= require('path');
 
 const app = express();
@@ -10,6 +11,7 @@ const publicPath=path.join(__dirname,'../public');
 
 app.use(express.static(publicPath)); //this tells express to use the file from path for default route so default route is never served as its value is  index.html
 // if its index1.html the default route will be served
+// After above line we can access the other pages as localhost:4000/isAbsolute.html and we wont be needing any routes
 
 
 //creating routes
