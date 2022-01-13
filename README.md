@@ -120,12 +120,17 @@ create gitignore file
 git add .
 git commit -m 
 heroku create <app name>
-git remote (to check remote)
+git remote (to check remote) => if remote created else you have to create remote
+git remote add heroku <url>
 git push heroku master:main
 
 # To push changes to our repo
 we dont have remote set as orgin
 git remote add <remote name> <repo url>
 eg: git remote add origin git@github.com:katoch-anuj/node_jan8_2022.git
+git push origin master:weatherAppIntegartion
+this will produce erro as we have a readme file
 
-git push -f  master:<remote branch>
+# Link
+https://jdhao.github.io/2018/05/16/git-push-local-to-remote/
+git push -f origin master:weatherAppIntegartion
