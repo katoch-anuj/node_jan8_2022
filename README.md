@@ -106,8 +106,26 @@ and use this port.
 
 Update the url
 const url = `http://localhost:4000/weather?address=${address}`;
-
+ 
+ not require
 git push heroku master when our code is in master branch in git else if we are deploying from other branch then use
 git push heroku <branch name>:master
 # Application Link
 https://akatoch-weather-app.herokuapp.com/
+# what worked
+checkout the branch
+go inside the project
+git init
+create gitignore file 
+git add .
+git commit -m 
+heroku create <app name>
+git remote (to check remote)
+git push heroku master:main
+
+# To push changes to our repo
+we dont have remote set as orgin
+git remote add <remote name> <repo url>
+eg: git remote add origin git@github.com:katoch-anuj/node_jan8_2022.git
+
+git push -f  master:<remote branch>
