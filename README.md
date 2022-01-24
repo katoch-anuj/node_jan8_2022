@@ -106,5 +106,32 @@ const dowork = async()=>{
   code below await  line will execute only if the promise succeeds else it would stop then and there.
   so for that we use try catch.
 
+ #  Hashing  
+ Storing password using hashing (bcryptjs)
+ encryption and decrypction are reversilbe but hasing is not reversible
+ eg:
+ a text password --> hash paswword
+ hash password --> back to password (not possible)
+ so we compare the hash to continue future testing
+
+ # schema
+ When we create a mongoose model, we're passing an object in as the second argument to model.
+  Behind the scene Mongoose converts it into  a schema.
+  To make use of middleware we have to create schema at our end first.
+  const schema=new Mongoose.Schema({})
+  schema.pre("save",function(next)) and schema.post
+save is the name of event
+calling next()determines that async operation is complete.
+user is saved.
+
+But how does it know when we're done running our code now?
+It could just say when the function is over, but that wouldn't account for any asynchronous process
+which might be occurring.
+ if we never call next, it's just going to hang forever, thinking that we're still running some
+code before we save the user and it will never actually save the user.
+
+# note
+certain mongoose operation like update(as it works directly on db) we  bypassed the schema middleware (that's why we used runValidators flag) 
+
 
  

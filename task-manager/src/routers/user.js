@@ -62,7 +62,16 @@ router.patch('/users/:id',async (req,res)=>{
     }
     try{
         //new ensures that updated result is returned, runvlaidators ensure that validation occurs else in this case empty name will be saved
-        const user= await User.findByIdAndUpdate(id,req.body,{new:true,runValidators:true});
+        //this will bypass the middleware for schema so updating this.
+        // const user= await User.findByIdAndUpdate(id,req.body,{new:true,runValidators:true});
+       //below code is done so that our middleware runs and we dont update db directly
+        const user = await User.findById(id);
+        updates.forEach(update=>{
+            user[update]=req.body[update];
+        });
+        await user.save();
+        //new code neds here
+
         if(!user){
             res.status(400).send()
         }
