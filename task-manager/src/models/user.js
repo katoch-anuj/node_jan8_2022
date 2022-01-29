@@ -53,11 +53,12 @@ const userSchema = new mongoose.Schema({
 //methos ensure tht function can be called on user instance
 userSchema.methods.generateJwtToken = async function() {
     const user=this;
-    console.log(user._id) //returns new ObjectId("61eed7cf646a47f45e2a21b2")
-    console.log(user._id.toString()); // return 61eed7cf646a47f45e2a21b2
+    // console.log(user._id) //returns new ObjectId("61eed7cf646a47f45e2a21b2")
+    // console.log(user._id.toString()); // return 61eed7cf646a47f45e2a21b2
     //creating a token
     const token = jwt.sign({_id:user._id.toString()},'thisismyproject');
     user.tokens.push({token})
+    user.tokens = user.tokens.concat({token})
     await user.save()//creates a sub document which has its own id
     return token;
 

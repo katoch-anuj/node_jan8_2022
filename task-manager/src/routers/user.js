@@ -2,6 +2,7 @@ const express = require("express");
 
 const router = new express.Router();
 const User = require("../models/user.js")
+const auth = require('../middleware/auth');
 
 router.post('/user',async (req,res)=>{
     var user = new User(req.body);
@@ -18,13 +19,18 @@ router.post('/user',async (req,res)=>{
 /**
  *  Reading
  */
-router.get("/users", async (req,res)=>{
+router.get("/users", auth, async (req,res)=>{
     try{
         const user=await User.find({});
         res.send(user);
     }catch(e){
         res.status(500).send()
     }
+})
+router.get("/users/me", auth, async (req,res)=>{
+    
+        res.send(req.user);
+    
 })
 router.get("/users/:id", async (req,res)=>{
     const _id=req.params.id;
