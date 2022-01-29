@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 var validator = require('validator');
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -41,8 +42,26 @@ const userSchema = new mongoose.Schema({
             }
         }
 
-    }
+    },
+    tokens:[{
+        token:{
+            type:String,
+            required:true
+        }
+    }]
 }); 
+//methos ensure tht function can be called on user instance
+userSchema.methods.generateJwtToken = async function() {
+    const user=this;
+    console.log(user._id) //returns new ObjectId("61eed7cf646a47f45e2a21b2")
+    console.log(user._id.toString()); // return 61eed7cf646a47f45e2a21b2
+    //creating a token
+    const token = jwt.sign({_id:user._id.toString()},'thisismyproject');
+    user.tokens.push({token})
+    await user.save()//creates a sub document which has its own id
+    return token;
+
+}
 //statics ensures that we can use this function directly on User model
 userSchema.statics.findByCredentials= async (email,password)=>{
     const user =await  User.findOne({email});
@@ -52,7 +71,6 @@ userSchema.statics.findByCredentials= async (email,password)=>{
     if(user){
         const isCompare = await bcrypt.compare(password,user.password);
         if(!isCompare){
-            console.log("error")
             throw new Error("not able to login")
         }
         return user;

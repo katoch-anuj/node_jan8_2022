@@ -6,8 +6,9 @@ const User = require("../models/user.js")
 router.post('/user',async (req,res)=>{
     var user = new User(req.body);
     try{
+        const token =  await user.generateJwtToken();
         const result=await user.save()
-        res.send(result);
+        res.send({result,token});
     }catch(e){
         res.status(400).send(e);
     }
@@ -96,7 +97,9 @@ router.delete('/users/:id',async(req,res)=>{
 router.post("/user/login",async(req,res)=>{
     try{
         const user = await User.findByCredentials(req.body.email,req.body.password) // creating custom function like findById
-        res.send(user)
+        //function to create jwt token
+        const token =  await user.generateJwtToken();
+        res.send({user,token})
     }catch(e){
         res.status(400).send()
     }
