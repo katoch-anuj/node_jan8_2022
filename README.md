@@ -133,5 +133,27 @@ code before we save the user and it will never actually save the user.
 # note
 certain mongoose operation like update(as it works directly on db) we  bypassed the schema middleware (that's why we used runValidators flag) 
 
-
+# Login credentails
+userSchema.statics.somefunction
+this ensures that we can call someFunction directly from User object like 
+User.findById
+User.someFunction
  
+ # Json Web Tokens (JWT)
+ jsonwebtoken npm 
+ token=jwt.sign({},'some string',{expiresIn:'7 days'})
+ value inside the object will be the value that will be embeded in the token.(unique identifier will work)
+second arg is used to sign the token to ensure its not hampered.(any series of character)
+jwt.verify(token,'some string')
+jwt has 3 parts
+header 
+This is a base64 encoded Jason's string, and this is known as the header.
+It contains some meta information about what type of token it is.
+It's a JWT and the algorithm that was used to generate it.
+payload: This is also a base64 encoded JSON string.
+signature:
+
+So the goal of the JSON Web token isn't to hide the data that you've provided right here.
+This is actually publicly viewable to anyone who has the token.
+They don't need the secret to see that the whole point of the JWT is to create data, this data that's
+verifiable via the signature.

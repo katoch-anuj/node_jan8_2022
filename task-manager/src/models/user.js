@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -42,16 +43,31 @@ const userSchema = new mongoose.Schema({
 
     }
 }); 
+//statics ensures that we can use this function directly on User model
+userSchema.statics.findByCredentials= async (email,password)=>{
+    const user =await  User.findOne({email});
+    if(!user){
+        throw new Error("not able to login")
+    }
+    if(user){
+        const isCompare = await bcrypt.compare(password,user.password);
+        if(!isCompare){
+            console.log("error")
+            throw new Error("not able to login")
+        }
+        return user;
+    }
+}
+
+//pre hook to hash password before saving
 userSchema.pre("save", async function(next){
     const user= this;
     if(user.isModified('password')){
         user.password= await bcrypt.hash(user.password,8); // to convert into hash 8 is th elevel of hashing too much makes it very slow and too low value not good for security point
     //to compare hash
     // await bcrypt.compare(passowrd,hash)
-    console.log("before saving")
+    // console.log("before saving")
     }
-    
-    
     next()
 })
 const User = mongoose.model("User",userSchema);
