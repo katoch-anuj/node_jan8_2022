@@ -8,8 +8,8 @@ router.post('/user',async (req,res)=>{
     var user = new User(req.body);
     try{
         const token =  await user.generateJwtToken();
-        const result=await user.save()
-        res.send({result,token});
+        // const result=await user.save()
+        res.send({user,token});
     }catch(e){
         res.status(400).send(e);
     }

@@ -54,13 +54,14 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.toJSON = function (){
     const user = this;
     // this is very imp as user represents mongoose object and not js object.To get an actual JavaScript object you have to call  toObject()
+   //and we want to ensure that.toJSON return a native js object.
     const userObject = user.toObject(); 
     delete userObject.password;
     delete userObject.tokens;
     return userObject;
 }
 
-//methos ensure tht function can be called on user instance
+//method ensure tht function can be called on user instance
 userSchema.methods.generateJwtToken = async function() {
     const user=this;
     // console.log(user._id) //returns new ObjectId("61eed7cf646a47f45e2a21b2")
