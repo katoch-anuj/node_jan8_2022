@@ -53,8 +53,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.toJSON = function (){
     const user = this;
-    console.log("user 12334455555",user)
-    console.log("user",user.toObject())
     // this is very imp as user represents mongoose object and not js object.To get an actual JavaScript object you have to call  toObject()
     const userObject = user.toObject(); 
     delete userObject.password;
