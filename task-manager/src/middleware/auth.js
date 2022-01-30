@@ -11,6 +11,7 @@ const auth = async (req, res, next)=>{
         if(!user){
             throw new Error()
         }
+        req.token=token;
         //since we have the user info here we can attache same to req
         req.user =user;
         next()

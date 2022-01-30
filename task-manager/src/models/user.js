@@ -50,6 +50,18 @@ const userSchema = new mongoose.Schema({
         }
     }]
 }); 
+
+userSchema.methods.toJSON = function (){
+    const user = this;
+    console.log("user 12334455555",user)
+    console.log("user",user.toObject())
+    // this is very imp as user represents mongoose object and not js object.To get an actual JavaScript object you have to call  toObject()
+    const userObject = user.toObject(); 
+    delete userObject.password;
+    delete userObject.tokens;
+    return userObject;
+}
+
 //methos ensure tht function can be called on user instance
 userSchema.methods.generateJwtToken = async function() {
     const user=this;
@@ -58,7 +70,7 @@ userSchema.methods.generateJwtToken = async function() {
     //creating a token
     const token = jwt.sign({_id:user._id.toString()},'thisismyproject');
     user.tokens.push({token})
-    user.tokens = user.tokens.concat({token})
+    // user.tokens = user.tokens.concat({token})
     await user.save()//creates a sub document which has its own id
     return token;
 
