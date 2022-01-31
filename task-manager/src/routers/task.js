@@ -22,12 +22,22 @@ router.post('/task',auth,async (req,res)=>{
     //     res.status(400).send(error);
     // })
 })
-
+// supporting?completed=true
 router.get("/tasks",auth, async (req,res)=>{
+    // updating this with virtual property
+    // const completed = req.query.completed ==='true';
+    const match={}
+    if (req.query.completed){
+        match.completed=req.query.completed ==='true';
+    }
     try{
-
-        const task=await Task.find({owner:req.user._id});
-        res.send(task);
+        // updating this with virtual property
+        // const task=await Task.find({owner:req.user._id,completed:completed});
+        await req.user.populate({
+            path:'myTasks',
+            match
+        })
+        res.send(req.user.myTasks); // send back the tasks related to a specific user
     }catch(e){
         res.status(500).send()
     }

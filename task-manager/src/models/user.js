@@ -4,53 +4,59 @@ const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 const task= require('./task')
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        trim: true,
-        lowercase: true,
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        lowercase: true,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-                throw new Error("email is wrong");
-            }
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("email is wrong");
         }
+      },
     },
     age: {
-        type: Number,
-        default: 0,
-        validate(value) {
-            if (value < 0) {
-                throw new Error("not a valid age")
-            }
+      type: Number,
+      default: 0,
+      validate(value) {
+        if (value < 0) {
+          throw new Error("not a valid age");
         }
+      },
     },
     password: {
-        type: String,
-        trim: true,
-        required: true,
-        minLength: 7,
-        validate(value) {
-            if (value.toLowerCase().includes('password')) {
-                throw new Error("password is not acceptable")
-            }
+      type: String,
+      trim: true,
+      required: true,
+      minLength: 7,
+      validate(value) {
+        if (value.toLowerCase().includes("password")) {
+          throw new Error("password is not acceptable");
         }
-
+      },
     },
-    tokens:[{
-        token:{
-            type:String,
-            required:true
-        }
-    }]
-}); 
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+); 
 
 userSchema.methods.toJSON = function (){
     const user = this;
@@ -61,6 +67,12 @@ userSchema.methods.toJSON = function (){
     delete userObject.tokens;
     return userObject;
 }
+
+userSchema.virtual("myTasks",{
+    ref:"Task",
+    localField:'_id',
+    foreignField:'owner'
+});
 
 //method ensure tht function can be called on user instance
 userSchema.methods.generateJwtToken = async function() {
