@@ -157,3 +157,86 @@ So the goal of the JSON Web token isn't to hide the data that you've provided ri
 This is actually publicly viewable to anyone who has the token.
 They don't need the secret to see that the whole point of the JWT is to create data, this data that's
 verifiable via the signature.
+
+# generating auth token
+userSchema.statics.function --> the function is accessible on the model(model method)
+userSchema.methods.function --> the function is accessible to the instance(instance method)
+
+while adding tokens to model as an array of object there is an extra id that is generated.
+this is known as sub document and like regular document it has its own id generated to it.
+
+# Express Middleware
+without middleware --> request --> route handler
+with middleare --> request --> dosomething --> route handler
+
+Register a middleware(should be on very top)
+app.use((req,res,next)=>{ 
+
+})
+the function provided will run before theroute handler is called.
+if next() is not called route handler will never be executed
+
+using it with app ensure that the middleware is associated with every route.
+
+using it with specific route only:
+All we do is pass it in as an argument to the get method before we pass in our route.
+router.get('/user',middleware function,aync())
+
+sending in header
+Authorization: Bearer token
+
+# Postman
+environment varaible to use --> {{}}
+header--> authorization-->Bearer token--> this also serves same purpose
+so we will go to collection and set auth token there and in respective api we will select inherit auth from parent
+
+To get the token move automatically from login or create user
+if(pm.response.code === 200){
+    pm.environment.set('authToken',pm.response.json().token)
+}
+# hiding private data
+userSchema.methods.toJSON
+
+whenever we use res.send() --> it internally calls JSON.stringify
+whenever JSON.stringify gets called toJSON is called.
+
+eg:
+const pet ={name:'cat'}
+ pet.toJSON =function(){
+   return this /*** this this will return the object ***/
+  return {}
+ }
+ console.log(JSON.stringify(pet)) /*** if empty object is returned from top this will return {} ***/
+
+.toObject() --> converts mongoose object to js object.
+findByIdAndDelete is replaced by .remove()
+# user task relation
+  either task can save user or vice versa
+ task will save  user
+1> task model mein will add owner.
+owner{
+  type:mongoose.Schema.Types.ObjectId // so this is saying that the data stored in owner is going to be an object ID and that's correct.
+}
+const task= await Task.findById('id value')
+console.log(task.owner) // will return only the id
+To get more details of the user we have to fire another query wit respective user  id.
+Mongoose help to avoid this by providing helper fucntion and some relation.
+to link between taks and USer so as to fetch the user data we use:
+
+ref:'User' // the model we want to refer  add this to the task model as property for owner
+task.populate('owner').execPopulate() // to populate the user
+console.log(task.owner) // without ref this will return only id as we have set only id in task model but after setting ref we can access the entire user 
+
+To reverse the linking above i.e search by user id and find the task related to it
+user.tasks --> undefined
+
+Virtual Property-->A virtual property is not actual data stored in the database.(only for mongoose)
+It's a relationship between two entities, in this case, between our user and our task.
+first para is the name of virtual field and it can be anything
+userSchema.virtual('myTask',{
+  ref:"Task", // which model to populate documents from
+  localField:'_id' // refers to the user model
+  foreignfield:'owner' // refer to ref model 
+})
+Mongoose will populate documents from the model in ref whose foreignField matches this document's localField.
+user.populate('myTask').execPopulate()
