@@ -97,18 +97,31 @@ router.post('/user/logoutAll', auth, async(req,res)=>{
     }
 })
 const upload = multer({
-    dest:'avatar',
+    // dest:'avatar', // commenting this so we  an have access to the file in router
     limits:{
         fileSize:1000000 
     },
     fileFilter(req,file,cb){
         if(!file.originalname.match("\.(jpg|png|jpeg)$")) {
-             return cb(new Error("not valid file type"));
+             return cb(new Error("Please select png jpg or jpeg file"));
+            //  return cb(("Please select valid file"));
         }
          cb(undefined,true)
     }
 })
-router.post('/users/me/avatar',upload.single('avatar'),(req,res)=>{
+router.post('/users/me/avatar',auth,upload.single('avatar'),async (req,res)=>{
+    req.user.avatar=req.file.buffer;
+    await req.user.save()
+    res.send()
+},(error,req,res,next)=>{ //these param are very imp and should be passed
+    res.status(400).send({error:error.message})
+    // res.status(400).send({error:error})
+})
+
+router.delete('/users/me/avatar',auth,async (req,res) => {
+    // delete req.user.avatar; this won't work here
+    req.user.avatar= undefined;
+    await req.user.save()
     res.send()
 })
 module.exports = router;
