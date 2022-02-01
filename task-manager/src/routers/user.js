@@ -4,6 +4,7 @@ const router = new express.Router();
 const User = require("../models/user.js")
 const auth = require('../middleware/auth');
 const multer = require ('multer');
+const sharp=require("sharp");
 
 
 router.post('/user',async (req,res)=>{
@@ -110,7 +111,10 @@ const upload = multer({
     }
 })
 router.post('/users/me/avatar',auth,upload.single('avatar'),async (req,res)=>{
-    req.user.avatar=req.file.buffer;
+    // req.user.avatar=req.file.buffer;
+    //using sharp to convert all to png and resizing and returning the buffer
+    const buffer= await sharp(req.file.buffer).resize({width:250,height:250}).png().toBuffer();
+    req.user.avatar=buffer;
     await req.user.save()
     res.send()
 },(error,req,res,next)=>{ //these param are very imp and should be passed
@@ -123,5 +127,19 @@ router.delete('/users/me/avatar',auth,async (req,res) => {
     req.user.avatar= undefined;
     await req.user.save()
     res.send()
+})
+router.get('/users/:id/avatar',async (req,res) => {
+    // delete req.user.avatar; this won't work here
+    try{
+        const user =await User.findById({_id:req.params.id});
+        if(!user||!user.avatar){
+            throw new Error("not found")
+        }
+        res.set("content-Type","image/png")
+        res.send(user.avatar)
+    }catch(e){
+        res.status(500).send()
+    }
+    
 })
 module.exports = router;
