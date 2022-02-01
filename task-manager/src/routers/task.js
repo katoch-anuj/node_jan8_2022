@@ -26,16 +26,26 @@ router.post('/task',auth,async (req,res)=>{
 router.get("/tasks",auth, async (req,res)=>{
     // updating this with virtual property
     // const completed = req.query.completed ==='true';
-    const match={}
+    const match={};
+    const sort={};
     if (req.query.completed){
         match.completed=req.query.completed ==='true';
+    }
+    if (req.query.sort){
+        const part=req.query.sort.split(':')
+        sort[part[0]]=part[1]==='desc'?-1:1;
     }
     try{
         // updating this with virtual property
         // const task=await Task.find({owner:req.user._id,completed:completed});
         await req.user.populate({
             path:'myTasks',
-            match
+            match,
+            options:{
+                limit:parseInt(req.query.limit),
+                skip:parseInt(req.query.skip),
+                sort,
+              }
         })
         res.send(req.user.myTasks); // send back the tasks related to a specific user
     }catch(e){

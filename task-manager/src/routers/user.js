@@ -3,6 +3,8 @@ const express = require("express");
 const router = new express.Router();
 const User = require("../models/user.js")
 const auth = require('../middleware/auth');
+const multer = require ('multer');
+
 
 router.post('/user',async (req,res)=>{
     var user = new User(req.body);
@@ -93,5 +95,20 @@ router.post('/user/logoutAll', auth, async(req,res)=>{
     }catch(e){
         res.status(500).send("erro")
     }
+})
+const upload = multer({
+    dest:'avatar',
+    limits:{
+        fileSize:1000000 
+    },
+    fileFilter(req,file,cb){
+        if(!file.originalname.match("\.(jpg|png|jpeg)$")) {
+             return cb(new Error("not valid file type"));
+        }
+         cb(undefined,true)
+    }
+})
+router.post('/users/me/avatar',upload.single('avatar'),(req,res)=>{
+    res.send()
 })
 module.exports = router;
