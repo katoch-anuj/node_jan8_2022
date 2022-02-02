@@ -333,3 +333,21 @@ come from DNS
 # Setting env variable in heroku
  heroku config:set key=value
  heroku config:unset key
+set MONGODB_URL
+go to dashboard--> click connect-->connect your application-->copy it and update password
+for setting this use single quotes
+# NOTE 
+if password has special character those should be url encoded
+https://docs.atlas.mongodb.com/troubleshoot-connection/#special-characters-in-connection-string-password
+
+
+ # STEPS
+ 1> create repo on github
+ 2> git init --> creates local git repo
+ 3> add git ignore file and and commit to local repo
+ 4> Run the commands mentione din gitbuh under
+ …or push an existing repository from the command line
+ 5> heroku create <application-name>
+6> heroku config: set key=value --> set all 3 variables
+7> git push heroku master
+
