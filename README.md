@@ -210,6 +210,9 @@ const pet ={name:'cat'}
 
 .toObject() --> converts mongoose object to js object.
 findByIdAndDelete is replaced by .remove()
+
+# NOTE
+execpopulate is not required(depricated most prob)
 # user task relation
   either task can save user or vice versa
  task will save  user
@@ -240,3 +243,93 @@ userSchema.virtual('myTask',{
 })
 Mongoose will populate documents from the model in ref whose foreignField matches this document's localField.
 user.populate('myTask').execPopulate()
+
+# Sorting Pagination and Filtering
+
+timestamps:true --> in model creates createdAt and updatedAt
+Filtering
+
+req.populate({
+  path:'task',
+  match:{
+    completed:true
+  },
+  // for pagination
+  options:{
+    limit:2,
+    skip:1,
+    sort:{
+    createdAt: 1 // 1 for ascending -1 for descending
+  }
+  },
+
+})
+
+# file uploads
+multer npm
+
+for handling multipart/form-data
+
+const upload = multer({
+    dest:'imgaes // destination
+})
+
+upload.single('upload') --> returns middleware ,
+ upload is name of the file that multer will check  for uploading.(should have same name in form-data)
+
+ app.post('/uploads',upload.single('upload),(req,res)=>{
+
+ })
+
+ Validation
+ const upload = multer({
+    dest:'imgaes, // destination
+    limits:{
+      filesize:1000000 
+    },
+    //this function runs when any new file is uploaded called internally by multer
+   req: request made, file: file to be uploaded and then call cb
+    fileFilter(req,file,cb)=>{
+      file.originalname
+      cb(new Error('')); // file not uploaded and error msg
+      cb(undefined,true) // file uploaded
+      cd(undefined, false) // file not uploaded
+    }
+})
+
+We can access th eimage buffer in our route only when we havent defined the dest in config for multer
+router.post('/users/me/avatar',upload.single('avatar'),(req,res)=>{
+  req.file.buffer
+})
+
+to test: <img src="data:image/jpg;base64,{{binary data}}">
+regex101.com
+
+Setting header
+
+res.set("content-Type","application/json")--> done for json by default by express
+res.set("content-Type","image/jpg")
+Image can be accessed via
+src=http://localhost:4000/users/61f820e7620701cebd3c27df/avatar
+
+# auto cropping
+sharp npm
+
+# send emails
+SendGrid
+npm i @sendgrid/mail
+
+Setting--> single sender verification
+
+# Environment Variable setting
+env-cmd --save-dev (npm module)
+
+# production
+MongoDb atlas
+0.0.0.0/0 --> whitelist all ip
+
+SRV record -->
+come from DNS
+# Setting env variable in heroku
+ heroku config:set key=value
+ heroku config:unset key
