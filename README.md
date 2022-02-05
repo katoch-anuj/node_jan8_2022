@@ -323,10 +323,15 @@ Setting--> single sender verification
 
 # Environment Variable setting
 env-cmd --save-dev (npm module)
+we had to use -f flag for command to run
 
 # production
 MongoDb atlas
-0.0.0.0/0 --> whitelist all ip
+connect-->whitelist api-->0.0.0.0/0 --> whitelist all ip
+monogDb user
+Choose connection method-->connect with mongoDBCompass(replacement for robo 3t)
+MongoDb compass
+for localhost we use 127.0.0.1 for connecting to local db
 
 SRV record -->
 come from DNS
@@ -351,3 +356,53 @@ https://docs.atlas.mongodb.com/troubleshoot-connection/#special-characters-in-co
 6> heroku config: set key=value --> set all 3 variables
 7> git push heroku master
 
+# Testing jest/mocha
+pkg.json
+test:"jest"
+test:"jest --watch" --> keeps running
+test ("name of test",()=>{
+  const total=sun(10,3);
+  expect(total).toBe(13)//assertion
+})
+this would return true unless we throw an error
+throw new error("error);
+
+# asynchronous
+test("async",(done)=>{ // done or any variable name
+  setTimeout(()=>{
+    expect(1).toBe(2);
+    done() // this ensure that jest waits for done before giving result
+  },1000)
+})
+test("async",async ()=>{ // done not required
+  const sun= await add(2,3);
+  expect(sun).toBe(5);
+})
+
+# superTest npm
+this doesnt require your app to be up and running all it needs is your express app.it fires itself
+to wipe of all the data in db before we rerun any test case-->
+beforeEach(()->{})
+.toMatchObject({
+  object 
+})
+
+# Mocking libraries
+Directory name: __mocks__ (same format)
+the node module that we need to mock will create a copy of that
+eg @sendgrid
+
+# Fixtures
+Send a file using super test.
+eg: sending an image file for upload test.
+fixtures: things that allow you to set up the env variable
+.attach('','')--> to check for uploads
+toBe makes use of === which means expect({}).toBe({}) returns fail
+toEqual : expect({}).toEqual({}) returns pass
+expect(user.avatar).toEqual(expect.any(Buffer)) // expect.any checks for the type
+
+# setup task suite
+setting user task
+jest --watch --runInBand --> runInBand ensures that changes made in one test case file dont impact other files.i.e.
+run tests in series with no conflicts.
+here it is required as both task and user call beforeEach so that will cause conflict.

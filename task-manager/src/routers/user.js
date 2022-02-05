@@ -11,7 +11,7 @@ const {sendWelcomeEmail,sendCancelationEmail} = require ("../emails/account")
 router.post('/user',async (req,res)=>{
     var user = new User(req.body);
     try{
-        sendWelcomeEmail(user.email,user.name)
+        // sendWelcomeEmail(user.email,user.name)
         const token =  await user.generateJwtToken();
         // const result=await user.save()
         res.send({user,token});

@@ -84,7 +84,7 @@ userSchema.methods.generateJwtToken = async function() {
     // console.log(user._id) //returns new ObjectId("61eed7cf646a47f45e2a21b2")
     // console.log(user._id.toString()); // return 61eed7cf646a47f45e2a21b2
     //creating a token
-    const token = jwt.sign({_id:user._id.toString()},'process.env.JWT_SECRET');
+    const token = jwt.sign({_id:user._id.toString()},process.env.JWT_SECRET);
     user.tokens.push({token})
     // user.tokens = user.tokens.concat({token})
     await user.save()//creates a sub document which has its own id
