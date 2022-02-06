@@ -9,8 +9,13 @@ const app = express();
 //creating server
 const server = http.createServer(app);
 const io = socketio(server);
-io.on('connection',()=>{
+let count = 0;
+io.on('connection',(socket)=>{
     console.log('client connected')
+    socket.emit("countUpdated",count);
+    socket.on("increment",()=>{
+        io.emit("countUpdated",++count);
+    })
 })
 
 const port = process.env.PORT || 4000;
