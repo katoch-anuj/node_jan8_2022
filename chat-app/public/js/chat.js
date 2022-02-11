@@ -14,6 +14,22 @@ const $messageTemplate = document.querySelector("#message-template").innerHTML;
 const $locationTemplate = document.querySelector("#location-template").innerHTML;
 const $sideBarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
+//autoscroll
+const autoScroll = () =>{
+
+    const newMessage = $messages.lastElementChild;
+    const marginHeight = parseInt(getComputedStyle(newMessage).marginBottom);
+    const newMessageHeight = newMessage.offsetHeight+marginHeight;
+
+    const messageSectionHeight = $messages.offsetHeight;
+    const containerHeight = $messages.scrollHeight;
+    const scrollTopPosition = $messages.scrollTop;
+    
+    if(scrollTopPosition+messageSectionHeight>=containerHeight-newMessageHeight){
+        $messages.scrollTop = containerHeight;
+    }
+}
+
 socket.on("message",(msg)=>{
     const renderTemplate = Mustache.render($messageTemplate,{
         message:msg.text,
@@ -21,6 +37,7 @@ socket.on("message",(msg)=>{
         username:msg.username
     })
     $messages.insertAdjacentHTML('beforeend',renderTemplate)
+    autoScroll();
 })
 socket.on("LocationMessage",(message)=>{
     const html = Mustache.render($locationTemplate,{
@@ -29,6 +46,7 @@ socket.on("LocationMessage",(message)=>{
         username:message.username
     });
     $messages.insertAdjacentHTML("beforeend",html)
+    autoScroll()
 })
 socket.on('userList',({room,usersInroom})=>{
     const html = Mustache.render($sideBarTemplate,{

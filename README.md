@@ -45,6 +45,13 @@ const name="name"
 const obj={name}
 {name: 'name'}
 
+offsetHeight --> excludes the margin. height in the viewport
+getComputedStyle(document.querySelector("#messages").lastElementChild)--> returns all css  style prop
+
+scrollHeigt--> total height of conatiner even which is not in viewport
+scrollTop--> amount scrolled from top
+
+
 # geolocation
 mdn geolocation
 navigator.geolocation.getCurrentPosition((position)=>{console.log(position)})
